@@ -34,8 +34,7 @@
    that the counter scene still reads as a picture. */
 .hero::after {
   content: ''; position: absolute; inset: 0; z-index: -1;
-  background:
-    linear-gradient(100deg, rgba(31, 74, 60, 0.1) 0%, rgba(22, 48, 75, .78) 44%, rgba(22, 48, 75, .34) 100%);
+  background: rgba(22, 48, 75, .1);
 }
 .hero__inner { padding-block: clamp(var(--s6), 8vw, var(--s8)); max-width: 44rem; }
 .hero__title {
