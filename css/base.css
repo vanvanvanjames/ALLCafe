@@ -1,14 +1,14 @@
 /* ==========================================================================
    ALL Cafe — base.css
    Reset, design tokens and typography. The palette comes from the enamel
-   tasa: navy rim, speckled enamel white, espresso, ripe mango, leaf green.
+   tasa: green rim, speckled enamel white, espresso, ripe mango, leaf green.
    ========================================================================== */
 
 :root {
   /* ---- colour ---- */
-  --asul: #1F4A3C;          /* enamel-rim navy: header, footer, rims, display type */
-  --asul-deep: #1F4A3C;     /* pressed / footer base */
-  --asul-soft: rgba(28, 58, 91, .14);
+  --berde: #1F4A3C;          /* enamel-rim green: header, footer, rims, display type */
+  --berde-deep: #173A2F;     /* pressed / footer base */
+  --berde-soft: rgba(31, 74, 60, .14);
   --enamel: #F5F4EE;        /* speckled enamel white: page background */
   --enamel-2: #EBE7DD;      /* alternating band */
   --surface: #FFFDF9;       /* card face */
@@ -47,9 +47,9 @@
   --radius-sm: 10px;
   --radius-pill: 999px;
   --rim-w: 2px;
-  --rim: var(--rim-w) solid var(--asul);
-  --shadow-1: 0 2px 0 var(--asul-soft);
-  --shadow-2: 0 14px 34px -18px rgba(28, 58, 91, .55);
+  --rim: var(--rim-w) solid var(--berde);
+  --shadow-1: 0 2px 0 var(--berde-soft);
+  --shadow-2: 0 14px 34px -18px rgba(31, 74, 60, .55);
   --header-h: 68px;
 
   /* The enamelware speckle, inlined so it costs no request.
@@ -92,7 +92,7 @@ h1, h2, h3, h4 {
   font-weight: 800;
   line-height: 1.06;
   letter-spacing: -.022em;
-  color: var(--asul);
+  color: var(--berde);
   text-wrap: balance;
 }
 h1 { font-size: var(--fs-h1); }
@@ -105,7 +105,7 @@ a:hover { color: var(--kape-deep); }
 
 /* One focus style, legible on enamel and on navy alike. */
 :focus-visible {
-  outline: 3px solid var(--asul);
+  outline: 3px solid var(--berde);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -119,7 +119,7 @@ a:hover { color: var(--kape-deep); }
 
 .section { padding-block: clamp(2.75rem, 1.5rem + 5vw, 5rem); }
 .section--tint { background: var(--enamel-2); }
-.section--dark { background: var(--asul); background-image: var(--speckle-light); color: var(--enamel); }
+.section--dark { background: var(--berde); background-image: var(--speckle-light); color: var(--enamel); }
 .section--dark h2, .section--dark h3 { color: var(--enamel); }
 
 .stack > * + * { margin-top: var(--s4); }
@@ -146,7 +146,7 @@ a:hover { color: var(--kape-deep); }
 }
 .skip-link:focus { top: var(--s3); }
 
-.price { font-family: var(--font-chit); font-weight: 700; color: var(--asul); font-variant-numeric: tabular-nums; }
+.price { font-family: var(--font-chit); font-weight: 700; color: var(--berde); font-variant-numeric: tabular-nums; }
 .text-center { text-align: center; }
 
 /* The signature: a surface served on the cafe's own enamelware. */

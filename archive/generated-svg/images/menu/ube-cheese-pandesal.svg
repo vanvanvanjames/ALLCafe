@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="Three ube-cheese pandesal rolls on an enamel plate">
+<title>Three ube-cheese pandesal rolls on an enamel plate</title>
+<defs>
+<pattern id="spk" width="80" height="80" patternUnits="userSpaceOnUse">
+  <g fill="#1C3A5B" opacity="0.1">
+    <circle cx="9" cy="14" r="1.5"/><circle cx="31" cy="6" r="1"/><circle cx="52" cy="18" r="1.7"/>
+    <circle cx="70" cy="9" r="1.1"/><circle cx="19" cy="33" r="1.2"/><circle cx="44" cy="39" r="1.6"/>
+    <circle cx="63" cy="45" r="1"/><circle cx="6" cy="52" r="1.4"/><circle cx="27" cy="59" r="1"/>
+    <circle cx="49" cy="68" r="1.3"/><circle cx="73" cy="62" r="1.6"/><circle cx="36" cy="76" r="1.1"/>
+  </g>
+</pattern></defs>
+<rect width="400" height="300" fill="#EAE6DC"/>
+<rect width="400" height="300" fill="url(#spk)"/>
+<ellipse cx="200" cy="252" rx="140" ry="18" fill="#1C3A5B" opacity=".10"/>
+<ellipse cx="200" cy="212" rx="146" ry="46" fill="#FFFDF9" stroke="#1C3A5B" stroke-width="6"/>
+<ellipse cx="200" cy="212" rx="116" ry="33" fill="none" stroke="#1C3A5B" stroke-width="3" opacity=".3"/>
+    <g stroke="#1C3A5B" stroke-width="5">
+      <ellipse cx="132" cy="186" rx="58" ry="44" fill="#D9A96A"/>
+      <ellipse cx="268" cy="186" rx="58" ry="44" fill="#D9A96A"/>
+      <ellipse cx="200" cy="160" rx="62" ry="48" fill="#E3B87A"/>
+    </g>
+    <path d="M146 152c22-12 40-12 60 2" fill="none" stroke="#8E5FA8" stroke-width="13" stroke-linecap="round"/>
+    <g fill="#F2B84B"><rect x="176" y="120" width="18" height="13" rx="3"/><rect x="206" y="126" width="16" height="12" rx="3"/>
+      <rect x="118" y="164" width="16" height="12" rx="3"/><rect x="262" y="168" width="17" height="12" rx="3"/></g>
+    <g fill="#F0E2C8" opacity=".8"><ellipse cx="176" cy="140" rx="20" ry="8"/><ellipse cx="120" cy="168" rx="16" ry="7"/></g>
+</svg>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="The ALL Cafe counter at opening time, with enamel mugs and morning light">
+<title>The ALL Cafe counter at opening time, with enamel mugs and morning light</title>
+<defs>
+<pattern id="spk" width="80" height="80" patternUnits="userSpaceOnUse">
+  <g fill="#1C3A5B" opacity="0.1">
+    <circle cx="9" cy="14" r="1.5"/><circle cx="31" cy="6" r="1"/><circle cx="52" cy="18" r="1.7"/>
+    <circle cx="70" cy="9" r="1.1"/><circle cx="19" cy="33" r="1.2"/><circle cx="44" cy="39" r="1.6"/>
+    <circle cx="63" cy="45" r="1"/><circle cx="6" cy="52" r="1.4"/><circle cx="27" cy="59" r="1"/>
+    <circle cx="49" cy="68" r="1.3"/><circle cx="73" cy="62" r="1.6"/><circle cx="36" cy="76" r="1.1"/>
+  </g>
+</pattern><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2B84B"/><stop offset="1" stop-color="#E08A3C"/></linearGradient>
+   <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16304B" stop-opacity="0"/><stop offset="1" stop-color="#16304B" stop-opacity=".55"/></linearGradient></defs>
+<rect width="1200" height="800" fill="#16304B"/>
+<rect width="1200" height="800" fill="url(#spk)"/>
+  <rect width="1200" height="800" fill="#16304B"/>
+  <rect width="1200" height="800" fill="url(#spk)"/>
+  <g opacity=".95">
+    <rect x="112" y="96" width="300" height="300" rx="14" fill="url(#win)"/>
+    <g stroke="#16304B" stroke-width="12"><path d="M262 96v300M112 246h300"/></g>
+    <rect x="112" y="96" width="300" height="300" rx="14" fill="none" stroke="#F5F4EE" stroke-width="10"/>
+  </g>
+  <g stroke="#F5F4EE" stroke-width="8" opacity=".8"><path d="M700 0v120M900 0v170M1080 0v90"/></g>
+  <g fill="#F2B84B" stroke="#F5F4EE" stroke-width="8">
+    <path d="M660 120h80l26 56c4 10-4 20-16 20h-100c-12 0-20-10-16-20Z"/>
+    <path d="M860 170h80l26 56c4 10-4 20-16 20h-100c-12 0-20-10-16-20Z"/>
+    <path d="M1040 90h80l26 56c4 10-4 20-16 20h-100c-12 0-20-10-16-20Z"/>
+  </g>
+  <g opacity=".5"><path d="M300 470c-10-14 10-22 0-38s8-24 2-34" fill="none" stroke="#F5F4EE" stroke-width="6" stroke-linecap="round" opacity=".5"/><path d="M560 450c-10-14 10-22 0-38s8-24 2-34" fill="none" stroke="#F5F4EE" stroke-width="6" stroke-linecap="round" opacity=".5"/><path d="M880 480c-10-14 10-22 0-38s8-24 2-34" fill="none" stroke="#F5F4EE" stroke-width="6" stroke-linecap="round" opacity=".5"/></g>
+  <rect x="0" y="520" width="1200" height="40" fill="#F5F4EE"/>
+  <rect x="0" y="560" width="1200" height="240" fill="#6B4226"/>
+  <rect x="0" y="560" width="1200" height="240" fill="url(#spk)"/>
+  <g stroke="#4E2F1B" stroke-width="6" opacity=".7"><path d="M180 560v240M480 560v240M780 560v240M1020 560v240"/></g>
+  <g transform="translate(232 452) scale(1.7)">
+  <path d="M13.5 25 16 49c.4 4.5 3.5 7 8 7h12c4.5 0 7.6-2.5 8-7l2.5-24Z" fill="#F5F4EE"/>
+  <g fill="none" stroke="#1C3A5B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46.5 30.5C54.5 30.5 58.5 34 58.5 38.5S54.5 46.5 47.5 46.5"/>
+    <path d="M13.5 25 16 49c.4 4.5 3.5 7 8 7h12c4.5 0 7.6-2.5 8-7l2.5-24"/></g>
+  <rect x="10" y="14.5" width="40" height="9" rx="4.5" fill="#1C3A5B"/></g><g transform="translate(492 432) scale(1.9)">
+  <path d="M13.5 25 16 49c.4 4.5 3.5 7 8 7h12c4.5 0 7.6-2.5 8-7l2.5-24Z" fill="#F5F4EE"/>
+  <g fill="none" stroke="#1C3A5B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46.5 30.5C54.5 30.5 58.5 34 58.5 38.5S54.5 46.5 47.5 46.5"/>
+    <path d="M13.5 25 16 49c.4 4.5 3.5 7 8 7h12c4.5 0 7.6-2.5 8-7l2.5-24"/></g>
+  <rect x="10" y="14.5" width="40" height="9" rx="4.5" fill="#1C3A5B"/></g><g transform="translate(812 462) scale(1.6)">
+  <path d="M13.5 25 16 49c.4 4.5 3.5 7 8 7h12c4.5 0 7.6-2.5 8-7l2.5-24Z" fill="#F5F4EE"/>
+  <g fill="none" stroke="#1C3A5B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46.5 30.5C54.5 30.5 58.5 34 58.5 38.5S54.5 46.5 47.5 46.5"/>
+    <path d="M13.5 25 16 49c.4 4.5 3.5 7 8 7h12c4.5 0 7.6-2.5 8-7l2.5-24"/></g>
+  <rect x="10" y="14.5" width="40" height="9" rx="4.5" fill="#1C3A5B"/></g>
+  <g transform="translate(980 424)">
+    <path d="M0 40c0-26 22-44 56-44s56 18 56 44Z" fill="#F5F4EE" stroke="#1C3A5B" stroke-width="6"/>
+    <g fill="#E3B87A" stroke="#1C3A5B" stroke-width="5"><ellipse cx="34" cy="8" rx="26" ry="18"/><ellipse cx="80" cy="8" rx="26" ry="18"/><ellipse cx="57" cy="-14" rx="27" ry="19"/></g>
+  </g>
+  <rect y="600" width="1200" height="200" fill="url(#fade)"/>
+</svg>

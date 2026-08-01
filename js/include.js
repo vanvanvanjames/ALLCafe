@@ -20,14 +20,17 @@
   AllCafe.SITE = {
     name: 'ALL Cafe',
     tagline: 'Kape para sa lahat.',
-    address: '123 P. Zamora St., Barangay 15, Caloocan City',
-    addressExtra: 'Monumento area — 2 tricycle minutes from LRT-1',
+    address: '67 Taas Rd., Barangay 171, Caloocan City',
+    addressExtra: 'North Caloocan — a short tricycle ride off Camarin Road',
     mobile: '0917 555 0142',
     mobileHref: 'tel:+639175550142',
     email: 'hello@allcafe.ph',
     facebook: 'facebook.com/allcafeph',
     instagram: '@allcafe.ph',
-    leadTimeMins: 30
+    leadTimeMins: 30,
+    /* The real pin. The short link is what humans get sent to; the embed
+       below builds a keyless iframe URL from the address itself. */
+    mapsUrl: 'https://maps.app.goo.gl/zyqrVyMBcSCX6Zrt8'
   };
 
   /* Opening hours, keyed by JS day number. 24-hour minutes from midnight. */
@@ -275,6 +278,8 @@
         '</div>' +
         '<div class="footer__bar">' +
           '<span>&copy; ' + new Date().getFullYear() + ' ' + s.name + '. Caloocan City.</span>' +
+          '<span><a href="CREDITS.md">Photo credits</a> &middot; ' +
+            'CC0, CC BY and CC BY-SA imagery</span>' +
           '<span class="footer__demo">Demo prototype &mdash; not a real store (yet)</span>' +
         '</div>' +
       '</div>' +
@@ -294,6 +299,7 @@
     ensureToastRegion();
     renderOpenStatus();
     fillSiteDetails();
+    injectJSONLD();
   }
 
   /* Shop details are written once here and stamped into any page that asks
@@ -319,9 +325,58 @@
       node.href = 'mailto:' + s.email;
       if (!node.dataset.keepText) node.textContent = s.email;
     });
-    each('[data-maps-link]', function (node) {
-      node.href = 'https://www.google.com/maps/search/?api=1&query=' + mapsQuery;
-    });
+    each('[data-maps-link]', function (node) { node.href = s.mapsUrl; });
+  }
+
+
+  /* ---------------------------------------------------------------------
+     Structured data. Built from AllCafe.SITE so the machine-readable
+     address can never drift from the one printed in the footer.
+     --------------------------------------------------------------------- */
+  function injectJSONLD() {
+    if (document.getElementById('allcafe-jsonld')) return;
+    var s = AllCafe.SITE;
+    var hours = [
+      { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'], open: '07:00', close: '21:00' },
+      { days: ['Friday', 'Saturday'], open: '07:00', close: '22:00' },
+      { days: ['Sunday'], open: '08:00', close: '20:00' }
+    ];
+    var data = {
+      '@context': 'https://schema.org',
+      '@type': 'CafeOrCoffeeShop',
+      name: s.name,
+      slogan: s.tagline,
+      description: 'A neighbourhood kapihan in Caloocan City serving espresso, ' +
+        'non-coffee drinks and merienda, with advance ordering for pickup.',
+      image: new URL('images/hero/kapihan-counter.webp', document.baseURI).href,
+      telephone: s.mobileHref.replace('tel:', ''),
+      email: s.email,
+      url: document.baseURI,
+      hasMap: s.mapsUrl,
+      priceRange: '₱₱',
+      servesCuisine: ['Coffee', 'Filipino', 'Bakery'],
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '67 Taas Rd., Barangay 171',
+        addressLocality: 'Caloocan City',
+        addressRegion: 'Metro Manila',
+        addressCountry: 'PH'
+      },
+      openingHoursSpecification: hours.map(function (row) {
+        return {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: row.days,
+          opens: row.open,
+          closes: row.close
+        };
+      }),
+      sameAs: ['https://' + s.facebook, 'https://instagram.com/allcafe.ph']
+    };
+    var tag = document.createElement('script');
+    tag.type = 'application/ld+json';
+    tag.id = 'allcafe-jsonld';
+    tag.textContent = JSON.stringify(data, null, 2);
+    document.head.appendChild(tag);
   }
 
   function each(selector, fn) {

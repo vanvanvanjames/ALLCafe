@@ -8,8 +8,8 @@
   .row{padding:3px 8px;border-left:4px solid transparent}
   .pass{color:#2F6B2A;border-color:#5C7A54}
   .fail{color:#B3261E;background:#FBEAE9;border-color:#B3261E;font-weight:700}
-  .head{margin-top:12px;font-weight:700;color:#1C3A5B;border-bottom:2px solid #1C3A5B}
-  #summary{position:sticky;top:0;z-index:9;background:#fff;font:700 18px system-ui;padding:10px;margin:10px 0;border:2px solid #1C3A5B;border-radius:8px}
+  .head{margin-top:12px;font-weight:700;color:#1F4A3C;border-bottom:2px solid #1F4A3C}
+  #summary{position:sticky;top:0;z-index:9;background:#fff;font:700 18px system-ui;padding:10px;margin:10px 0;border:2px solid #1F4A3C;border-radius:8px}
   iframe{width:1000px;height:200px;border:1px solid #999;background:#fff}
 </style>
 </head>
@@ -262,7 +262,8 @@ function fire(el, type){ el.dispatchEvent(new (type==='click'?MouseEvent:Event)(
     d.getElementById('chat-input').value = 'saan kayo banda?';
     fire(d.querySelector('[data-chat-form]'), 'submit');
     await wait(1200);
-    check('typed Taglish answered', /P\. Zamora/.test(d.querySelector('.chat-log').textContent));
+    check('typed Taglish answered', /Taas Rd/.test(d.querySelector('.chat-log').textContent),
+      d.querySelector('.chat-log').textContent.slice(-90));
     var count = d.querySelectorAll('.chat-msg').length;
 
     w = await load('menu.html'); d = w.document;

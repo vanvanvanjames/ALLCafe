@@ -24,7 +24,7 @@
 
     var frame = document.createElement('iframe');
     frame.src = 'https://www.google.com/maps?q=' + query + '&z=16&output=embed';
-    frame.title = 'Map showing ALL Cafe on P. Zamora St., Caloocan City';
+    frame.title = 'Map showing ALL Cafe on Taas Rd., Barangay 171, Caloocan City';
     frame.loading = 'lazy';
     frame.referrerPolicy = 'no-referrer-when-downgrade';
     frame.setAttribute('allowfullscreen', '');
@@ -32,9 +32,9 @@
     placeholder.replaceWith(frame);
 
     AllCafe.toast({
-      html: 'Map loaded from Google. The pin is a <b>placeholder</b> for this demo.',
+      html: 'Map loaded from Google &mdash; <b>67 Taas Rd., Barangay 171</b>.',
       actionLabel: 'Get directions',
-      actionHref: 'https://www.google.com/maps/search/?api=1&query=' + query
+      actionHref: AllCafe.SITE.mapsUrl
     });
   });
 }());

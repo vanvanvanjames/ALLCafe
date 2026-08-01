@@ -42,11 +42,11 @@
     return {
       html: 'We\'re at <b>' + esc(AllCafe.SITE.address) + '</b> — ' +
         AllCafe.SITE.addressExtra.toLowerCase() + '. ' +
-        'Any Rizal Ave jeep passes us; look for the navy storefront with the mango awning.',
+        'Any Camarin–Zabarte jeep drops you at the corner; look for the green shopfront '+
+        'with the chairs out front.',
       actions: [
         { label: 'Directions', href: 'contact.html' },
-        { label: 'Open in Maps', href: 'https://www.google.com/maps/search/?api=1&query=' +
-            encodeURIComponent(AllCafe.SITE.address + ', Philippines'), external: true }
+        { label: 'Open in Maps', href: AllCafe.SITE.mapsUrl, external: true }
       ]
     };
   }
@@ -99,7 +99,7 @@
   function parkingAnswer() {
     return {
       html: 'Two slots right out front, plus street parking on the side road after 9 AM. ' +
-        'Weekends get tight — most suki just take a tricycle from Monumento.',
+        'Weekends get tight — most suki just take a tricycle in from Camarin Road.',
       actions: [{ label: 'Getting here', href: 'contact.html' }]
     };
   }
@@ -127,7 +127,8 @@
     ] },
     { id: 'location', chip: 'Location', answer: locationAnswer, patterns: [
       'where', 'saan', 'nasaan', 'address', 'locat*', 'direction*', 'map', 'papunta', 'punta',
-      'monumento', 'caloocan', 'branch', 'malapit', 'near', 'how do i get', 'pano pumunta'
+      'caloocan', 'camarin', 'taas', 'barangay 171', 'branch', 'malapit', 'near',
+      'how do i get', 'pano pumunta'
     ] },
     { id: 'menu', chip: 'Menu', answer: menuAnswer, patterns: [
       'menu', 'price*', 'magkano', 'presyo', 'how much', 'cost', 'coffee', 'kape', 'drink*',

@@ -162,9 +162,22 @@ it beat Leaflet + OpenStreetMap here. Holding it behind a button keeps the page
 light, keeps it working offline until someone wants the map, and avoids handing a
 visitor to Google just for reading the opening hours.
 
-**The illustrations are hand-built SVG, not stock photos.** That keeps the folder
-offline-safe and licence-free. To swap in photography, point the `img` field of an
-item in `menu-data.js` at a JPEG — the card template, the cart row and the
+**The address lives in one object.** `AllCafe.SITE` in `include.js` holds the
+street address, phone, email and the Google Maps link; the footer, contact page,
+chat widget, map embed and the JSON-LD block are all generated from it, so the
+machine-readable address can never drift from the printed one.
+
+**The imagery is real photography under reusable licences.** 27 photos sourced
+through Openverse and Wikimedia Commons, filtered to CC0, Public Domain, CC BY and
+CC BY-SA — 17 of them CC0. Each is cropped to the aspect its layout uses and
+encoded as WebP. Full attribution is in [CREDITS.md](CREDITS.md), linked from the
+footer because 10 of the 27 require it.
+
+The illustrated SVGs they replaced are kept in `archive/generated-svg/`, mirroring
+their original folder structure. They are not referenced by the running site.
+
+To swap any photo, drop a new file in `images/` and point the `img` field of that
+item in `menu-data.js` at it — the card template, the cart row and the
 confirmation recap all follow automatically.
 
 ### Known limits
@@ -174,3 +187,5 @@ confirmation recap all follow automatically.
   and the "9+ needs a call" rule are demo rules, not a real operating policy.
 - Fonts come from Google Fonts. Offline, the pages fall back to Arial
   Black / Segoe UI / Courier New and still lay out correctly.
+- The photographs are real but generic — they are stand-ins for a shoot, not
+  pictures of an actual shop at this address.
