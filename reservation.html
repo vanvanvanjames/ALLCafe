@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reserve a Table — ALL Cafe | Caloocan City</title>
+<meta name="description" content="Book a table at ALL Cafe Caloocan for parties of up to eight. Fifteen-minute courtesy hold, walk-ins always welcome. Demo prototype — no booking is actually made.">
+<meta name="theme-color" content="#1C3A5B">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Reserve a Table — ALL Cafe">
+<meta property="og:description" content="May okasyon? We'll set the table. Parties of up to eight at ALL Cafe Caloocan.">
+<meta property="og:image" content="images/story/table-for-two.svg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Karla:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div data-include="header"></div>
+<noscript>
+  <p class="noscript-note">
+    This prototype uses JavaScript for its navigation and booking form.
+    Pages: <a href="index.html">Home</a> · <a href="menu.html">Menu</a> ·
+    <a href="reservation.html">Reserve</a> · <a href="contact.html">Visit Us</a> ·
+    <a href="order.html">Your Order</a>
+  </p>
+</noscript>
+
+<main id="main">
+
+  <section class="page-head">
+    <div class="wrap">
+      <p class="eyebrow">Reservations</p>
+      <h1>Reserve a Table</h1>
+      <p>Parties of up to eight. Bigger barkada? Tap the mug at the corner or give us a ring &mdash; we'll sort it out.</p>
+    </div>
+  </section>
+
+  <div class="section">
+    <div class="wrap reserve-layout">
+
+      <div class="reserve-main">
+
+        <!-- Shown while a request from this tab session is still pending -->
+        <div class="banner" data-pending-banner hidden>
+          <p class="banner__text">
+            You already have a reservation request &mdash; <strong data-pending-code></strong>
+            <span data-pending-when></span>.
+          </p>
+          <div class="banner__actions">
+            <button class="btn btn--outline btn--sm" type="button" data-pending-view>View details</button>
+            <button class="btn btn--primary btn--sm" type="button" data-pending-cancel>Cancel request</button>
+          </div>
+        </div>
+
+        <!-- ======================= Booking form ====================== -->
+        <div data-view="form">
+          <ul class="policy-strip">
+            <li><img src="assets/icons/clock.svg" alt="" width="24" height="24"><span data-policy-hours>Open daily</span></li>
+            <li><img src="assets/icons/hold.svg" alt="" width="24" height="24"><span>Held 15 minutes past your slot</span></li>
+            <li><img src="assets/icons/door.svg" alt="" width="24" height="24"><span>Walk-ins always welcome</span></li>
+          </ul>
+
+          <form class="panel tasa" data-reservation-form novalidate>
+            <h2 class="section-title">Your booking</h2>
+
+            <div class="form-error-summary" data-error-summary role="alert" hidden></div>
+
+            <div class="form">
+              <div class="field" data-field="name">
+                <label class="field__label" for="rsv-name">Name <span class="field__req" aria-hidden="true">*</span></label>
+                <input id="rsv-name" name="name" type="text" autocomplete="name" required
+                       aria-describedby="rsv-name-error">
+                <p class="field__error" id="rsv-name-error" data-error></p>
+              </div>
+
+              <div class="field" data-field="mobile">
+                <label class="field__label" for="rsv-mobile">Contact number <span class="field__req" aria-hidden="true">*</span></label>
+                <input id="rsv-mobile" name="mobile" type="tel" inputmode="tel" autocomplete="tel"
+                       placeholder="09XX XXX XXXX" required
+                       aria-describedby="rsv-mobile-hint rsv-mobile-error">
+                <p class="field__hint" id="rsv-mobile-hint">Philippine mobile — 09XXXXXXXXX or +639XXXXXXXXX.</p>
+                <p class="field__error" id="rsv-mobile-error" data-error></p>
+              </div>
+
+              <div class="form__row">
+                <div class="field" data-field="date">
+                  <label class="field__label" for="rsv-date">Date <span class="field__req" aria-hidden="true">*</span></label>
+                  <input id="rsv-date" name="date" type="date" required aria-describedby="rsv-date-hint rsv-date-error">
+                  <p class="field__hint" id="rsv-date-hint">Up to 30 days ahead.</p>
+                  <p class="field__error" id="rsv-date-error" data-error></p>
+                </div>
+
+                <div class="field" data-field="time">
+                  <label class="field__label" for="rsv-time">Time <span class="field__req" aria-hidden="true">*</span></label>
+                  <select id="rsv-time" name="time" required aria-describedby="rsv-time-hint rsv-time-error">
+                    <option value="">Choose a slot</option>
+                  </select>
+                  <p class="field__hint" id="rsv-time-hint" data-slot-hint>Last seating is an hour before closing.</p>
+                  <p class="field__error" id="rsv-time-error" data-error></p>
+                </div>
+              </div>
+
+              <div class="field" data-field="party">
+                <label class="field__label" for="rsv-party">Party size <span class="field__req" aria-hidden="true">*</span></label>
+                <select id="rsv-party" name="party" required aria-describedby="rsv-party-error">
+                  <option value="">How many of you?</option>
+                  <option value="1">1 person</option>
+                  <option value="2">2 people</option>
+                  <option value="3">3 people</option>
+                  <option value="4">4 people</option>
+                  <option value="5">5 people</option>
+                  <option value="6">6 people</option>
+                  <option value="7">7 people</option>
+                  <option value="8">8 people</option>
+                  <option value="9+">9+ (chat with us)</option>
+                </select>
+                <p class="field__error" id="rsv-party-error" data-error></p>
+              </div>
+
+              <div class="field" data-field="notes">
+                <label class="field__label" for="rsv-notes">Notes <span class="field__hint">(optional)</span></label>
+                <textarea id="rsv-notes" name="notes" maxlength="200"
+                          placeholder="Birthday celebration, need a corner table, may cake kami…"
+                          aria-describedby="rsv-notes-counter"></textarea>
+                <p class="counter" id="rsv-notes-counter" data-counter>0 / 200</p>
+              </div>
+
+              <p class="form-note" data-submit-hint>
+                <span aria-hidden="true">📓</span>
+                We'll text you to confirm within the hour. Demo prototype &mdash; no SMS is sent and no table is actually held.
+              </p>
+
+              <button class="btn btn--primary" type="submit" data-submit>Request a table</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ====================== Confirmation ======================= -->
+        <div data-view="confirm" hidden>
+          <div class="confirm tasa">
+            <p class="confirm__badge"><span class="dot dot--open"></span> Request received</p>
+            <h2>Your table is pencilled in.</h2>
+            <p class="lede">Keep this reference handy — quote it if you need to change anything.</p>
+
+            <p class="confirm__code" data-confirm-code>RSV-0000</p>
+
+            <dl class="confirm__grid">
+              <div><dt>Name</dt><dd data-confirm-name></dd></div>
+              <div><dt>Contact</dt><dd data-confirm-mobile></dd></div>
+              <div><dt>When</dt><dd data-confirm-when></dd></div>
+              <div><dt>Party</dt><dd data-confirm-party></dd></div>
+            </dl>
+
+            <p class="confirm__notes" data-confirm-notes hidden></p>
+
+            <p class="form-note">
+              <span aria-hidden="true">✉️</span>
+              We'll text you to confirm. <strong>Demo only: no SMS is sent and no table is held.</strong>
+            </p>
+
+            <div class="confirm__actions">
+              <a class="btn btn--outline" href="index.html">Back to Home</a>
+              <a class="btn btn--primary" href="menu.html">Pre-order drinks</a>
+              <button class="btn btn--outline" type="button" data-new-booking>Book another table</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================= Mini FAQ ======================== -->
+        <section class="section-tight" aria-labelledby="faq-heading">
+          <h2 id="faq-heading" class="section-title">Before you book</h2>
+          <div class="faq">
+            <details class="tasa">
+              <summary>Do I need a reservation to come in?</summary>
+              <p>Never. Walk-ins are the whole point of a neighborhood kapihan &mdash; reservations just guarantee you a table at a specific hour, which helps on weekends and after 5 PM.</p>
+            </details>
+            <details class="tasa">
+              <summary>Can we bring a cake?</summary>
+              <p>Yes, and no corkage. Tell us in the notes so we can set aside plates, forks and a table with enough room for the candles.</p>
+            </details>
+            <details class="tasa">
+              <summary>Is there parking?</summary>
+              <p>Two slots out front and street parking along the side road after 9 AM. Most suki arrive by tricycle or jeep &mdash; we're a two-minute ride from LRT-1 Monumento.</p>
+            </details>
+          </div>
+        </section>
+      </div>
+
+      <aside class="reserve-side">
+        <figure class="tasa reserve-art">
+          <img src="images/story/table-for-two.svg" alt="A table set for two with mugs, pandesal and a notebook, seen from above" width="600" height="450" loading="lazy">
+          <figcaption>Corner tables fit six comfortably, eight if everyone is friendly.</figcaption>
+        </figure>
+        <div class="tasa info-card">
+          <div class="info-card__icon"><img src="assets/icons/phone.svg" alt="" width="24" height="24"></div>
+          <h3>Rather just call?</h3>
+          <p>Big groups, catering, or same-day changes are fastest by phone.</p>
+          <ul class="plain-list">
+            <li><a data-site-phone href="#">0917 555 0142</a></li>
+            <li><a data-site-email href="#">hello@allcafe.ph</a></li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+</main>
+
+<div data-include="footer"></div>
+
+<script src="js/include.js" defer></script>
+<script src="js/menu-data.js" defer></script>
+<script src="js/cart.js" defer></script>
+<script src="js/forms.js" defer></script>
+<script src="js/chat.js" defer></script>
+<script src="js/reservation.js" defer></script>
+</body>
+</html>

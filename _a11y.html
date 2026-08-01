@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ALL Cafe — structure &amp; accessibility check</title>
+<style>
+  body{font:14px/1.5 ui-monospace,Consolas,monospace;background:#F5F4EE;margin:16px}
+  .row{padding:3px 8px;border-left:4px solid transparent}
+  .pass{color:#2F6B2A;border-color:#5C7A54}
+  .fail{color:#B3261E;background:#FBEAE9;border-color:#B3261E;font-weight:700}
+  .head{margin-top:12px;font-weight:700;color:#1C3A5B;border-bottom:2px solid #1C3A5B}
+  #summary{font:700 18px system-ui;padding:10px;margin:10px 0;border:2px solid #1C3A5B;border-radius:8px}
+  iframe{width:1100px;height:160px;border:1px solid #999}
+</style>
+</head>
+<body>
+<div id="summary">running…</div>
+<div id="out"></div>
+<iframe id="frame" src="about:blank"></iframe>
+<script>
+/* The rules Lighthouse's accessibility audit would flag, checked against the
+   rendered DOM of every page. Needs --allow-file-access-from-files. */
+var out=document.getElementById('out'),pass=0,fail=0;
+function group(n){out.insertAdjacentHTML('beforeend','<p class="head">'+n+'</p>');}
+function check(n,ok,detail){ok?pass++:fail++;
+  out.insertAdjacentHTML('beforeend','<div class="row '+(ok?'pass':'fail')+'">'+(ok?'✓':'✗')+' '+n+
+   (!ok&&detail!==undefined?' → '+String(detail).slice(0,180):'')+'</div>');}
+var frame=document.getElementById('frame');
+function load(u){return new Promise(function(r){frame.onload=function(){r(frame.contentWindow);};frame.src=u;});}
+function wait(ms){return new Promise(function(r){setTimeout(r,ms);});}
+
+var PAGES=['index.html','menu.html','order.html','reservation.html','contact.html','404.html'];
+
+(async function(){
+ try{
+  for (var i=0;i<PAGES.length;i++){
+    var page=PAGES[i];
+    var w=await load(page); var d=w.document;
+    await wait(120);
+    group(page);
+
+    check('has lang on <html>', d.documentElement.getAttribute('lang') === 'en');
+    check('has a <title>', !!d.title && d.title.length > 8, d.title);
+    check('has a meta description',
+      !!d.querySelector('meta[name="description"][content]'));
+    check('exactly one <h1>', d.querySelectorAll('h1').length === 1, d.querySelectorAll('h1').length);
+    check('exactly one <main>', d.querySelectorAll('main').length === 1);
+    check('exactly one <header>', d.querySelectorAll('header').length === 1);
+    check('exactly one <footer>', d.querySelectorAll('footer').length === 1);
+    check('skip link targets #main', !!d.querySelector('.skip-link[href="#main"]') && !!d.getElementById('main'));
+    check('nav is labelled', !!d.querySelector('nav[aria-label]'));
+
+    /* duplicate ids */
+    var ids={},dupes=[];
+    d.querySelectorAll('[id]').forEach(function(el){
+      if(ids[el.id]) dupes.push(el.id); else ids[el.id]=1;
+    });
+    check('no duplicate ids', dupes.length === 0, dupes.join(', '));
+
+    /* images */
+    var imgs=d.querySelectorAll('img'), noAlt=[];
+    imgs.forEach(function(im){ if(im.getAttribute('alt')===null) noAlt.push(im.getAttribute('src')); });
+    check(imgs.length+' images all carry an alt attribute', noAlt.length === 0, noAlt.join(', '));
+
+    /* form controls */
+    var controls=d.querySelectorAll('input, select, textarea'), unlabelled=[];
+    controls.forEach(function(c){
+      if(c.type==='hidden') return;
+      var labelled = (c.id && d.querySelector('label[for="'+c.id+'"]')) ||
+                     c.getAttribute('aria-label') || c.getAttribute('aria-labelledby') ||
+                     c.closest('label');
+      if(!labelled) unlabelled.push(c.name||c.id||c.type);
+    });
+    check(controls.length+' form controls all have a label', unlabelled.length === 0, unlabelled.join(', '));
+
+    /* buttons and links must have an accessible name */
+    var nameless=[];
+    d.querySelectorAll('button, a[href]').forEach(function(el){
+      var text=(el.textContent||'').trim();
+      var name=text || el.getAttribute('aria-label') || el.getAttribute('title');
+      if(!name) nameless.push(el.tagName+(el.className?'.'+String(el.className).split(' ')[0]:''));
+    });
+    check('every button and link has an accessible name', nameless.length === 0, nameless.join(', '));
+
+    /* heading order: no level skipped */
+    var levels=[].map.call(d.querySelectorAll('h1,h2,h3,h4'),function(h){return +h.tagName[1];});
+    var skipped=null;
+    for(var k=1;k<levels.length;k++) if(levels[k]-levels[k-1]>1) skipped=levels[k-1]+'→'+levels[k];
+    check('no heading level skipped', skipped === null, skipped);
+
+    /* touch targets */
+    var small=[];
+    d.querySelectorAll('.btn, .nav__link, .cart-btn, .chat-fab, .chat-chip, .tab, .stepper button').forEach(function(el){
+      var r=el.getBoundingClientRect();
+      if(r.width>0 && (r.height<40 || r.width<40)) small.push(el.className+' '+Math.round(r.width)+'×'+Math.round(r.height));
+    });
+    check('interactive targets are at least 40px', small.length === 0, small.slice(0,4).join(' | '));
+
+    check('chat panel is a labelled dialog',
+      !!d.querySelector('.chat-panel[role="dialog"][aria-label]'));
+    check('toast region announces politely',
+      !!d.querySelector('.toast-region[aria-live="polite"]'));
+  }
+ }catch(e){ check('harness ran without throwing', false, e && e.message); }
+
+ frame.remove();
+ var s=document.getElementById('summary');
+ s.textContent=(fail===0?'✅ ALL PASS — ':'❌ FAILURES — ')+pass+' passed, '+fail+' failed';
+ s.style.background=fail===0?'#E6EDE2':'#FBEAE9';
+ window.scrollTo(0,0);
+}());
+</script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visit Us — ALL Cafe | Monumento, Caloocan City</title>
+<meta name="description" content="ALL Cafe is on P. Zamora St. in Barangay 15, Caloocan City — two tricycle minutes from LRT-1 Monumento. Hours, directions and contact details.">
+<meta name="theme-color" content="#1C3A5B">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Visit Us — ALL Cafe, Caloocan City">
+<meta property="og:description" content="Two tricycle minutes from LRT-1 Monumento. Open daily from 7 AM.">
+<meta property="og:image" content="images/story/storefront.svg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Karla:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div data-include="header"></div>
+<noscript>
+  <p class="noscript-note">
+    This prototype uses JavaScript for its navigation, map and chat.
+    Pages: <a href="index.html">Home</a> · <a href="menu.html">Menu</a> ·
+    <a href="reservation.html">Reserve</a> · <a href="contact.html">Visit Us</a> ·
+    <a href="order.html">Your Order</a>
+  </p>
+</noscript>
+
+<main id="main">
+
+  <section class="page-head">
+    <div class="wrap">
+      <p class="eyebrow">Find us</p>
+      <h1>Visit Us in Caloocan</h1>
+      <p>We're the navy storefront with the mango awning. If you can smell tablea, you're close.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="essentials-heading">
+    <div class="wrap">
+      <h2 id="essentials-heading" class="visually-hidden">Address, hours and contact details</h2>
+      <div class="contact-grid">
+
+        <div class="info-card tasa">
+          <div class="info-card__icon"><img src="assets/icons/pin.svg" alt="" width="24" height="24"></div>
+          <h3>Address</h3>
+          <p data-address></p>
+          <p class="field__hint">Placeholder address for this prototype.</p>
+          <a class="link-arrow" data-maps-link href="#" target="_blank" rel="noopener">Open in Google Maps</a>
+        </div>
+
+        <div class="info-card tasa">
+          <div class="info-card__icon"><img src="assets/icons/clock.svg" alt="" width="24" height="24"></div>
+          <h3>Hours</h3>
+          <p class="pill pill--light" data-open-status></p>
+          <ul class="plain-list" data-hours-list></ul>
+        </div>
+
+        <div class="info-card tasa">
+          <div class="info-card__icon"><img src="assets/icons/phone.svg" alt="" width="24" height="24"></div>
+          <h3>Contact</h3>
+          <ul class="plain-list">
+            <li><a data-site-phone href="#">0917 555 0142</a></li>
+            <li><a data-site-email href="#">hello@allcafe.ph</a></li>
+            <li><a href="https://facebook.com/allcafeph" rel="noopener nofollow">facebook.com/allcafeph</a></li>
+            <li><a href="https://instagram.com/allcafe.ph" rel="noopener nofollow">@allcafe.ph</a></li>
+          </ul>
+          <p class="field__hint">Dummy details — nothing here reaches a real inbox.</p>
+        </div>
+
+        <div class="info-card tasa">
+          <div class="info-card__icon"><img src="assets/icons/route.svg" alt="" width="24" height="24"></div>
+          <h3>Getting here</h3>
+          <ul class="plain-list">
+            <li><strong>By train.</strong> Two tricycle minutes from LRT-1 Monumento.</li>
+            <li><strong>By jeep.</strong> Any Rizal Ave jeep passes us — tell the driver "tabi sa may ALL Cafe."</li>
+            <li><strong>By car.</strong> Two slots out front, street parking on the side road after 9 AM.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== Map ============================== -->
+  <section class="section section--tint" aria-labelledby="map-heading">
+    <div class="wrap">
+      <div class="section__head">
+        <div>
+          <p class="eyebrow">The pin</p>
+          <h2 id="map-heading">Where to point the tricycle</h2>
+        </div>
+        <a class="link-arrow" data-maps-link href="#" target="_blank" rel="noopener">Get directions</a>
+      </div>
+
+      <!-- The embed loads on request: it keeps the page light, works offline
+           until asked, and avoids a third-party request nobody opted into. -->
+      <figure class="map tasa" data-map>
+        <div class="map__placeholder" data-map-placeholder>
+          <img src="images/story/storefront.svg" alt="The ALL Cafe storefront on a Caloocan side street at dusk" width="900" height="560">
+          <div class="map__cta">
+            <p><strong>Map loads from Google.</strong> Tap below to bring it in.</p>
+            <button class="btn btn--primary" type="button" data-map-load>Load the map</button>
+          </div>
+        </div>
+        <figcaption>Monumento area, Caloocan City — a placeholder pin for this prototype.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ========================= Faster answers ======================== -->
+  <section class="section" aria-labelledby="faster-heading">
+    <div class="wrap">
+      <div class="faster tasa">
+        <div class="faster__mug" data-faster-mug aria-hidden="true"></div>
+        <div class="stack">
+          <p class="eyebrow">Faster answers</p>
+          <h2 id="faster-heading">Tap the mug at the corner.</h2>
+          <p>
+            Instant answers on hours, prices, parking, advance orders and bookings &mdash; no form,
+            no waiting for a reply. It understands English and a bit of Taglish, so
+            "bukas ba kayo?" works fine.
+          </p>
+          <div class="faster__actions">
+            <button class="btn btn--primary" type="button" data-open-chat>Ask the mug</button>
+            <a class="btn btn--outline" data-site-phone href="#">Call the shop</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div data-include="footer"></div>
+
+<script src="js/include.js" defer></script>
+<script src="js/menu-data.js" defer></script>
+<script src="js/cart.js" defer></script>
+<script src="js/chat.js" defer></script>
+<script src="js/contact.js" defer></script>
+</body>
+</html>

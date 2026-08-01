@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menu — ALL Cafe | Caloocan City</title>
+<meta name="description" content="Espresso, non-coffee drinks, pastries and merienda at ALL Cafe Caloocan. Prices in pesos, with advance ordering for pickup.">
+<meta name="theme-color" content="#1C3A5B">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Menu — ALL Cafe">
+<meta property="og:description" content="Espresso, non-coffee drinks, pastries and merienda. Order ahead for pickup.">
+<meta property="og:image" content="images/menu/spanish-latte.svg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Karla:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div data-include="header"></div>
+<noscript>
+  <p class="noscript-note">
+    This prototype uses JavaScript for its navigation, menu and cart.
+    Pages: <a href="index.html">Home</a> · <a href="menu.html">Menu</a> ·
+    <a href="reservation.html">Reserve</a> · <a href="contact.html">Visit Us</a> ·
+    <a href="order.html">Your Order</a>
+  </p>
+</noscript>
+
+<main id="main">
+
+  <section class="page-head">
+    <div class="wrap">
+      <p class="eyebrow">The board</p>
+      <h1>Menu</h1>
+      <p>Prices in ₱, VAT inclusive · Order ahead and pick up at the counter.</p>
+    </div>
+  </section>
+
+  <!-- Anchor pills rather than filters: no layout jumps, and the whole
+       board stays scannable on a phone. -->
+  <nav class="tabs" aria-label="Menu categories">
+    <div class="wrap tabs__inner" data-tabs>
+      <!-- rendered by menu.js -->
+    </div>
+  </nav>
+
+  <div class="wrap menu-sections" data-menu-sections>
+    <!-- rendered from menu-data.js by menu.js -->
+  </div>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="goodtoknow tasa">
+        <h2>Good to know</h2>
+        <ul class="plain-list">
+          <li><strong>Allergens.</strong> Our pastries are baked in a kitchen that handles milk, eggs, wheat and nuts. Tell us at the counter and we'll check for you.</li>
+          <li><strong>Advance orders</strong> need at least 30 minutes of lead time, and the last slot is 30 minutes before closing.</li>
+          <li><strong>Iced versions</strong> of hot espresso drinks are +₱15.</li>
+          <li><strong>This is a demo.</strong> Nothing here is charged, cooked, or sent to a real store.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div data-include="footer"></div>
+
+<script src="js/include.js" defer></script>
+<script src="js/menu-data.js" defer></script>
+<script src="js/cart.js" defer></script>
+<script src="js/cards.js" defer></script>
+<script src="js/chat.js" defer></script>
+<script src="js/menu.js" defer></script>
+</body>
+</html>

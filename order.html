@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Advance Order — ALL Cafe</title>
+<meta name="description" content="Review your ALL Cafe advance order, choose a pickup time, and pay at the counter when you arrive. Demo prototype — no payment is processed.">
+<meta name="theme-color" content="#1C3A5B">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Your Advance Order — ALL Cafe">
+<meta property="og:description" content="Order ahead for pickup at ALL Cafe Caloocan.">
+<meta property="og:image" content="images/story/empty-tasa.svg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Karla:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div data-include="header"></div>
+<noscript>
+  <p class="noscript-note">
+    This prototype uses JavaScript for its navigation, cart and checkout.
+    Pages: <a href="index.html">Home</a> · <a href="menu.html">Menu</a> ·
+    <a href="reservation.html">Reserve</a> · <a href="contact.html">Visit Us</a> ·
+    <a href="order.html">Your Order</a>
+  </p>
+</noscript>
+
+<main id="main">
+
+  <section class="page-head" data-head>
+    <div class="wrap">
+      <p class="eyebrow">Pickup only</p>
+      <h1>Your Advance Order</h1>
+      <p>Pick a slot at least 30 minutes out, then pay at the counter when you arrive.</p>
+    </div>
+  </section>
+
+  <div class="section">
+    <div class="wrap">
+
+      <!-- ====================== 1. Empty state ====================== -->
+      <div class="empty-state tasa" data-view="empty" hidden>
+        <img src="images/story/empty-tasa.svg" alt="An empty enamel mug tipped on its side" width="400" height="320">
+        <h2>Wala pang laman ang tasa mo.</h2>
+        <p class="lede">Nothing in your order yet. Start with a Spanish Latte &mdash; everyone else does.</p>
+        <a class="btn btn--primary" href="menu.html">Browse the Menu</a>
+      </div>
+
+      <!-- ====================== 2. Cart + form ====================== -->
+      <form class="order-layout" data-view="cart" data-order-form novalidate hidden>
+
+        <div class="order-main stack">
+          <section aria-labelledby="items-heading">
+            <h2 id="items-heading" class="section-title">Your items</h2>
+            <ul class="cart-list" data-cart-list></ul>
+          </section>
+
+          <section class="panel tasa" aria-labelledby="pickup-heading">
+            <h2 id="pickup-heading" class="section-title">Pickup details</h2>
+
+            <div class="form-error-summary" data-error-summary role="alert" hidden></div>
+
+            <div class="form">
+              <div class="form__row">
+                <div class="field" data-field="name">
+                  <label class="field__label" for="order-name">Name <span class="field__req" aria-hidden="true">*</span></label>
+                  <input id="order-name" name="name" type="text" autocomplete="name" required
+                         aria-describedby="order-name-error">
+                  <p class="field__error" id="order-name-error" data-error></p>
+                </div>
+
+                <div class="field" data-field="mobile">
+                  <label class="field__label" for="order-mobile">Mobile number <span class="field__req" aria-hidden="true">*</span></label>
+                  <input id="order-mobile" name="mobile" type="tel" inputmode="tel" autocomplete="tel"
+                         placeholder="09XX XXX XXXX" required
+                         aria-describedby="order-mobile-hint order-mobile-error">
+                  <p class="field__hint" id="order-mobile-hint">So we can text you when it's ready (demo — nothing is sent).</p>
+                  <p class="field__error" id="order-mobile-error" data-error></p>
+                </div>
+              </div>
+
+              <div class="form__row">
+                <div class="field" data-field="date">
+                  <label class="field__label" for="order-date">Pickup date <span class="field__req" aria-hidden="true">*</span></label>
+                  <input id="order-date" name="date" type="date" required
+                         aria-describedby="order-date-error">
+                  <p class="field__error" id="order-date-error" data-error></p>
+                </div>
+
+                <div class="field" data-field="time">
+                  <label class="field__label" for="order-time">Pickup time <span class="field__req" aria-hidden="true">*</span></label>
+                  <select id="order-time" name="time" required aria-describedby="order-time-hint order-time-error">
+                    <option value="">Choose a slot</option>
+                  </select>
+                  <p class="field__hint" id="order-time-hint" data-slot-hint>30-minute slots within opening hours.</p>
+                  <p class="field__error" id="order-time-error" data-error></p>
+                </div>
+              </div>
+
+              <div class="field" data-field="notes">
+                <label class="field__label" for="order-notes">Notes <span class="field__hint">(optional)</span></label>
+                <textarea id="order-notes" name="notes" maxlength="200"
+                          placeholder="Less ice, extra shot, para kay Ate Bea…"
+                          aria-describedby="order-notes-counter"></textarea>
+                <p class="counter" id="order-notes-counter" data-counter>0 / 200</p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Receipt chit: the running total, set in the order-slip typeface -->
+        <aside class="order-side">
+          <div class="chit tasa">
+            <h3>Order summary</h3>
+            <div class="chit__rows" data-chit-rows></div>
+            <hr class="chit__rule">
+            <div class="chit__row"><span>Subtotal</span><span data-chit-subtotal>₱0</span></div>
+            <div class="chit__row"><span>Prep fee</span><span class="chit__free">on the house</span></div>
+            <hr class="chit__rule">
+            <p class="chit__total"><span>Total</span><span data-chit-total>₱0</span></p>
+            <button class="btn btn--primary btn--block" type="submit" data-submit>Place advance order</button>
+            <p class="chit__note">Pay at the counter — cash or GCash. This is a demo: no payment is processed.</p>
+          </div>
+        </aside>
+      </form>
+
+      <!-- ===================== 3. Confirmation ====================== -->
+      <div data-view="confirm" hidden>
+        <div class="confirm tasa">
+          <p class="confirm__badge"><span class="dot dot--open"></span> Order received</p>
+          <h2>Salamat! We're on it.</h2>
+          <p class="lede">Show this code at the counter and we'll hand your order over.</p>
+
+          <p class="confirm__code" data-confirm-code>ALL-00000000-000</p>
+
+          <dl class="confirm__grid">
+            <div><dt>Name</dt><dd data-confirm-name></dd></div>
+            <div><dt>Mobile</dt><dd data-confirm-mobile></dd></div>
+            <div><dt>Pickup</dt><dd data-confirm-when></dd></div>
+            <div><dt>Total</dt><dd data-confirm-total></dd></div>
+          </dl>
+
+          <div class="chit chit--flat">
+            <h3>What you ordered</h3>
+            <div class="chit__rows" data-confirm-items></div>
+          </div>
+
+          <p class="confirm__notes" data-confirm-notes hidden></p>
+
+          <p class="form-note">
+            <span aria-hidden="true">☕</span>
+            Pay at the counter — cash or GCash. <strong>Demo only: no payment was processed and no order was sent.</strong>
+          </p>
+
+          <div class="confirm__actions">
+            <a class="btn btn--outline" href="index.html">Back to Home</a>
+            <a class="btn btn--primary" href="menu.html">Order again</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<div data-include="footer"></div>
+
+<script src="js/include.js" defer></script>
+<script src="js/menu-data.js" defer></script>
+<script src="js/cart.js" defer></script>
+<script src="js/cards.js" defer></script>
+<script src="js/forms.js" defer></script>
+<script src="js/chat.js" defer></script>
+<script src="js/order.js" defer></script>
+</body>
+</html>

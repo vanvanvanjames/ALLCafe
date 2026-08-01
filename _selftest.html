@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ALL Cafe — self test</title>
+<style>
+  body{font:14px/1.5 ui-monospace,Consolas,monospace;background:#F5F4EE;color:#23282E;margin:20px;max-width:1000px}
+  h1{font:700 20px system-ui;margin:0 0 4px}
+  .row{padding:3px 8px;border-left:4px solid transparent}
+  .pass{color:#2F6B2A;border-color:#5C7A54}
+  .fail{color:#B3261E;background:#FBEAE9;border-color:#B3261E;font-weight:700}
+  .head{margin-top:14px;font-weight:700;color:#1C3A5B;border-bottom:2px solid #1C3A5B}
+  #summary{font:700 18px system-ui;padding:10px;margin:12px 0;border:2px solid #1C3A5B;border-radius:8px}
+</style>
+</head>
+<body>
+<h1>ALL Cafe — module self test</h1>
+<div id="summary">running…</div>
+<div id="out"></div>
+
+<div data-include="header"></div>
+<div data-include="footer"></div>
+
+<script src="js/include.js" defer></script>
+<script src="js/menu-data.js" defer></script>
+<script src="js/cart.js" defer></script>
+<script src="js/cards.js" defer></script>
+<script src="js/forms.js" defer></script>
+<script src="js/chat.js" defer></script>
+<script defer>
+window.addEventListener('load', function () {
+  var out = document.getElementById('out'), pass = 0, fail = 0;
+  function group(name) { out.insertAdjacentHTML('beforeend', '<p class="head">' + name + '</p>'); }
+  function check(name, ok, detail) {
+    ok ? pass++ : fail++;
+    out.insertAdjacentHTML('beforeend',
+      '<div class="row ' + (ok ? 'pass' : 'fail') + '">' + (ok ? '✓' : '✗') + ' ' + name +
+      (detail !== undefined && !ok ? ' → got: ' + JSON.stringify(detail) : '') + '</div>');
+  }
+  var A = window.AllCafe;
+
+  group('environment');
+  check('AllCafe namespace present', !!A);
+  check('sessionStorage usable on this protocol (informational)', true, A.store.persistent);
+  out.insertAdjacentHTML('beforeend', '<div class="row">· store.persistent = ' + A.store.persistent +
+    ' (false ⇒ in-memory fallback in use)</div>');
+  check('header injected', !!document.querySelector('.site-header'));
+  check('footer injected', !!document.querySelector('.site-footer'));
+  check('chat fab mounted', !!document.querySelector('.chat-fab'));
+  check('menu has 20 items', A.MENU.length === 20, A.MENU.length);
+  check('every item has a unique id', new Set(A.MENU.map(function(i){return i.id;})).size === A.MENU.length);
+  check('every item has alt text', A.MENU.every(function(i){return i.alt && i.alt.length > 8;}));
+  check('4 featured items', A.featuredItems().length === 4, A.featuredItems().length);
+
+  group('peso formatting');
+  check('₱1,234 comma thousands', A.peso(1234) === '₱1,234', A.peso(1234));
+  check('₱150 plain', A.peso(150) === '₱150', A.peso(150));
+
+  group('cart engine');
+  A.cart.clear();
+  check('starts empty', A.cart.isEmpty());
+  A.cart.add('spanish-latte');
+  A.cart.add('spanish-latte');
+  A.cart.add('ube-cheese-pandesal', 3);
+  check('count sums quantities', A.cart.count() === 5, A.cart.count());
+  check('subtotal 2×150 + 3×75 = 525', A.cart.subtotal() === 525, A.cart.subtotal());
+  check('unknown id rejected', A.cart.add('not-a-drink') === null);
+  check('cart still 2 lines', A.cart.lines().length === 2, A.cart.lines().length);
+  check('qty clamps at MAX_QTY', A.cart.setQty('spanish-latte', 99) === 10, A.cart.setQty('spanish-latte', 99));
+  check('setQty(0) removes the line', (A.cart.setQty('spanish-latte', 0), A.cart.lines().length) === 1);
+
+  var removed = A.cart.remove('ube-cheese-pandesal');
+  check('remove returns line + index', removed && removed.qty === 3 && removed.index === 0, removed);
+  check('cart empty after remove', A.cart.isEmpty());
+  A.cart.restore(removed);
+  check('restore puts it back', A.cart.count() === 3, A.cart.count());
+  check('detailed() re-derives price from menu-data',
+    A.cart.detailed()[0].price === A.findItem('ube-cheese-pandesal').price);
+
+  A.store.set('allcafe.cart', [{id:'ghost', qty:2}, {id:'americano', qty:'3'}, {id:'americano', qty:1}, null, {qty:9}]);
+  check('read() drops unknown ids, dupes and junk', A.cart.lines().length === 1, A.cart.lines());
+  check('read() coerces string qty', A.cart.count() === 3, A.cart.count());
+  A.cart.clear();
+  check('clear empties the cart', A.cart.isEmpty() && A.cart.count() === 0);
+
+  group('badge sync');
+  A.cart.add('americano', 2);
+  check('badge shows 2', document.querySelector('[data-cart-count]').textContent === '2');
+  check('badge visible', document.querySelector('[data-cart-count]').hidden === false);
+  A.cart.clear();
+  check('badge hidden when empty', document.querySelector('[data-cart-count]').hidden === true);
+
+  group('PH mobile validation');
+  [['09171234567',true],['+639171234567',true],['639171234567',true],['0917 123 4567',true],
+   ['0917-123-4567',true],['0917123456',false],['08171234567',false],['12345',false],['',false],
+   ['+6391712345678',false],['abcdefghijk',false]].forEach(function (pair) {
+    check('“' + pair[0] + '” → ' + pair[1], A.forms.isValidMobile(pair[0]) === pair[1]);
+  });
+  check('formats to 0917 123 4567', A.forms.formatMobile('+639171234567') === '0917 123 4567',
+    A.forms.formatMobile('+639171234567'));
+
+  group('time slots (from opening hours)');
+  function nextDow(dow) {
+    var d = new Date();
+    d.setDate(d.getDate() + 1);
+    while (d.getDay() !== dow) d.setDate(d.getDate() + 1);
+    return A.toISODate(d);
+  }
+  var sunday = nextDow(0), saturday = nextDow(6), monday = nextDow(1);
+  var sunSlots = A.forms.slotsFor(sunday, { endOffsetMins: 30 });
+  check('Sunday opens 8:00 AM', sunSlots[0].label === '8:00 AM', sunSlots[0]);
+  check('Sunday last pickup 7:30 PM', sunSlots[sunSlots.length-1].label === '7:30 PM', sunSlots[sunSlots.length-1]);
+  var satSlots = A.forms.slotsFor(saturday, { endOffsetMins: 60 });
+  check('Saturday opens 7:00 AM', satSlots[0].label === '7:00 AM', satSlots[0]);
+  check('Saturday last seating 9:00 PM', satSlots[satSlots.length-1].label === '9:00 PM', satSlots[satSlots.length-1]);
+  var monSlots = A.forms.slotsFor(monday, { endOffsetMins: 30 });
+  check('Monday last pickup 8:30 PM', monSlots[monSlots.length-1].label === '8:30 PM', monSlots[monSlots.length-1]);
+  check('slots are 30 minutes apart', monSlots[1].minutes - monSlots[0].minutes === 30);
+  check('past date yields no slots', A.forms.slotsFor('2020-01-01', {}).length === 0);
+  check('garbage date yields no slots', A.forms.slotsFor('nope', {}).length === 0);
+  check('describeSlot reads naturally',
+    /at 3:30 PM$/.test(A.forms.describeSlot(monday, '15:30')), A.forms.describeSlot(monday, '15:30'));
+
+  group('chat intents');
+  [['what time do you open','hours'],['bukas ba kayo ngayon','hours'],['anong oras kayo sarado','hours'],
+   ['where are you located','location'],['saan kayo banda','location'],['how do i get there','location'],
+   ['magkano ang latte','menu'],['do you have ube','menu'],['whats on the menu','menu'],
+   ['i want to reserve a table','reservation'],['pwede magpareserve para sa birthday','reservation'],
+   ['how do i order ahead','order'],['pano umorder','order'],['pickup ba ito','order'],
+   ['do you accept gcash','payment'],['pwede bang cash','payment'],
+   ['is there parking','parking'],['may parking ba kayo','parking'],
+   ['can i talk to a human','human'],['may tao ba diyan','human']
+  ].forEach(function (pair) {
+    var answer = A.chat.match(pair[0]);
+    var expected = A.chat.intents.filter(function (i) { return i.id === pair[1]; })[0].answer();
+    check('“' + pair[0] + '” → ' + pair[1], answer.html === expected.html, answer.html.slice(0, 60));
+  });
+  check('small talk: “hello”', /Kumusta/.test(A.chat.match('hello').html));
+  check('small talk: “salamat”', /Walang anuman/.test(A.chat.match('salamat').html));
+  check('fallback re-offers chips', A.chat.match('do you sell bicycles').showChips === true);
+  check('fallback text', /Di ko sure/.test(A.chat.match('xyzzy plugh').html));
+  check('hours answer quotes real hours', /7:00 AM/.test(A.chat.match('hours').html));
+  check('menu answer quotes a real price',
+    A.chat.match('magkano').html.indexOf(A.peso(65)) !== -1, A.chat.match('magkano').html);
+
+  group('cards');
+  var html = A.cardHTML(A.findItem('spanish-latte'));
+  check('card renders name', html.indexOf('Spanish Latte') !== -1);
+  check('card renders price', html.indexOf('₱150') !== -1);
+  check('card image has alt', /alt="An iced Spanish latte/.test(html));
+  check('card has add button', /data-add-id="spanish-latte"/.test(html));
+  check('escapeHTML neutralises markup',
+    A.escapeHTML('<img src=x onerror=alert(1)>') === '&lt;img src=x onerror=alert(1)&gt;');
+
+  group('codes');
+  check('order code shape ALL-YYYYMMDD-###', /^ALL-\d{8}-\d{3}$/.test(A.orderCode()), A.orderCode());
+  check('reservation code shape RSV-####', /^RSV-\d{4}$/.test(A.reservationCode()), A.reservationCode());
+
+  A.cart.clear();
+  document.getElementById('summary').textContent =
+    (fail === 0 ? '✅ ALL PASS — ' : '❌ FAILURES — ') + pass + ' passed, ' + fail + ' failed';
+  document.getElementById('summary').style.background = fail === 0 ? '#E6EDE2' : '#FBEAE9';
+});
+</script>
+</body>
+</html>

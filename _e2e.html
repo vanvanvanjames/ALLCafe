@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ALL Cafe — end-to-end flow test</title>
+<style>
+  body{font:14px/1.5 ui-monospace,Consolas,monospace;background:#F5F4EE;margin:16px}
+  .row{padding:3px 8px;border-left:4px solid transparent}
+  .pass{color:#2F6B2A;border-color:#5C7A54}
+  .fail{color:#B3261E;background:#FBEAE9;border-color:#B3261E;font-weight:700}
+  .head{margin-top:12px;font-weight:700;color:#1C3A5B;border-bottom:2px solid #1C3A5B}
+  #summary{position:sticky;top:0;z-index:9;background:#fff;font:700 18px system-ui;padding:10px;margin:10px 0;border:2px solid #1C3A5B;border-radius:8px}
+  iframe{width:1000px;height:200px;border:1px solid #999;background:#fff}
+</style>
+</head>
+<body>
+<div id="summary">running…</div>
+<div id="out"></div>
+<iframe id="frame" src="about:blank"></iframe>
+
+<script>
+/* Drives the real pages inside an iframe. Chrome must be started with
+   --allow-file-access-from-files for cross-document scripting on file://. */
+var out = document.getElementById('out'), pass = 0, fail = 0;
+function group(n){ out.insertAdjacentHTML('beforeend','<p class="head">'+n+'</p>'); }
+function check(n, ok, detail){
+  ok ? pass++ : fail++;
+  out.insertAdjacentHTML('beforeend','<div class="row '+(ok?'pass':'fail')+'">'+(ok?'✓':'✗')+' '+n+
+    (!ok && detail!==undefined ? ' → got: '+JSON.stringify(String(detail)).slice(0,140) : '')+'</div>');
+}
+var frame = document.getElementById('frame');
+function load(url){
+  return new Promise(function(resolve, reject){
+    frame.onload = function(){
+      try { resolve(frame.contentWindow); }
+      catch(e){ reject(e); }
+    };
+    frame.src = url;
+  });
+}
+function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+function fire(el, type){ el.dispatchEvent(new (type==='click'?MouseEvent:Event)(type,{bubbles:true})); }
+
+(async function () {
+  try {
+    /* ---------- menu → add to cart ---------- */
+    group('menu page — add to cart');
+    var w = await load('menu.html');
+    var d = w.document;
+    w.AllCafe.cart.clear();
+    await wait(60);
+
+    var cards = d.querySelectorAll('[data-add-id]');
+    check('menu renders one add button per item', cards.length === 20, cards.length);
+    check('badge starts hidden', d.querySelector('[data-cart-count]').hidden === true);
+
+    d.querySelector('[data-add-id="spanish-latte"]').click();
+    d.querySelector('[data-add-id="spanish-latte"]').click();
+    d.querySelector('[data-add-id="ube-cheese-pandesal"]').click();
+    await wait(60);
+
+    check('cart holds 3 items', w.AllCafe.cart.count() === 3, w.AllCafe.cart.count());
+    check('badge shows 3', d.querySelector('[data-cart-count]').textContent === '3');
+    check('screen-reader label updates',
+      /3 items/.test(d.querySelector('[data-cart-label]').textContent),
+      d.querySelector('[data-cart-label]').textContent);
+    check('a toast appeared', !!d.querySelector('.toast'));
+    check('toast links to the order page',
+      d.querySelector('.toast__action') && /order\.html$/.test(d.querySelector('.toast__action').getAttribute('href')));
+    check('button flashed “Added”',
+      d.querySelector('[data-add-id="spanish-latte"]').textContent.indexOf('Added') !== -1);
+    check('subtotal 2×150 + 75 = 375', w.AllCafe.cart.subtotal() === 375, w.AllCafe.cart.subtotal());
+
+    /* ---------- cart survives navigation ---------- */
+    group('cart survives navigation');
+    w = await load('index.html'); d = w.document;
+    await wait(60);
+    check('badge still 3 on Home', d.querySelector('[data-cart-count]').textContent === '3');
+    check('Home renders 4 featured cards',
+      d.querySelectorAll('[data-featured-grid] .card').length === 4,
+      d.querySelectorAll('[data-featured-grid] .card').length);
+    check('active nav marks Home', d.querySelector('.nav__link[aria-current="page"]').textContent === 'Home');
+
+    /* ---------- order page: empty vs filled ---------- */
+    group('order page — views');
+    w = await load('order.html'); d = w.document;
+    await wait(80);
+    check('cart view shown', d.querySelector('[data-view="cart"]').hidden === false);
+    check('empty view hidden', d.querySelector('[data-view="empty"]').hidden === true);
+    check('empty view not painted',
+      w.getComputedStyle(d.querySelector('[data-view="empty"]')).display === 'none');
+    check('two cart rows', d.querySelectorAll('.cart-row').length === 2, d.querySelectorAll('.cart-row').length);
+    check('chit total is ₱375', d.querySelector('[data-chit-total]').textContent === '₱375',
+      d.querySelector('[data-chit-total]').textContent);
+
+    /* stepper */
+    d.querySelector('[data-step="1"][data-id="ube-cheese-pandesal"]').click();
+    await wait(60);
+    check('plus button raises quantity', w.AllCafe.cart.count() === 4, w.AllCafe.cart.count());
+    check('chit total recalculated to ₱450', d.querySelector('[data-chit-total]').textContent === '₱450',
+      d.querySelector('[data-chit-total]').textContent);
+
+    /* remove + undo */
+    d.querySelector('[data-remove="ube-cheese-pandesal"]').click();
+    await wait(60);
+    check('remove drops the line', d.querySelectorAll('.cart-row').length === 1);
+    var undo = d.querySelector('.toast__action');
+    check('undo offered', !!undo && undo.textContent === 'Undo', undo && undo.textContent);
+    undo.click();
+    await wait(60);
+    check('undo restores quantity', w.AllCafe.cart.count() === 4, w.AllCafe.cart.count());
+    check('undo restores position', w.AllCafe.cart.lines()[1].id === 'ube-cheese-pandesal',
+      JSON.stringify(w.AllCafe.cart.lines()));
+
+    /* ---------- validation ---------- */
+    group('order page — validation blocks a bad submit');
+    var form = d.querySelector('[data-order-form]');
+    d.getElementById('order-name').value = 'A';
+    d.getElementById('order-mobile').value = '12345';
+    d.getElementById('order-time').value = '';
+    fire(form, 'submit');
+    await wait(80);
+
+    check('name error shown', d.querySelector('[data-field="name"]').classList.contains('is-invalid'));
+    check('name message is specific', /at least 2 characters/.test(d.querySelector('#order-name-error').textContent),
+      d.querySelector('#order-name-error').textContent);
+    check('mobile error shown', d.querySelector('[data-field="mobile"]').classList.contains('is-invalid'));
+    check('mobile message names the format', /09XXXXXXXXX/.test(d.querySelector('#order-mobile-error').textContent),
+      d.querySelector('#order-mobile-error').textContent);
+    check('time error shown', d.querySelector('[data-field="time"]').classList.contains('is-invalid'));
+    check('error summary visible', d.querySelector('[data-error-summary]').hidden === false);
+    check('aria-invalid set for screen readers',
+      d.getElementById('order-name').getAttribute('aria-invalid') === 'true');
+    check('still on the cart view', d.querySelector('[data-view="confirm"]').hidden === true);
+    check('cart untouched by the failed submit', w.AllCafe.cart.count() === 4);
+
+    /* ---------- successful submit ---------- */
+    group('order page — successful submit');
+    d.getElementById('order-name').value = 'Ivan Legaspi';
+    fire(d.getElementById('order-name'), 'input');
+    d.getElementById('order-mobile').value = '09171234567';
+    fire(d.getElementById('order-mobile'), 'input');
+
+    var slots = d.getElementById('order-time').querySelectorAll('option[value]:not([value=""])');
+    check('pickup slots were generated', slots.length > 0, slots.length);
+    d.getElementById('order-time').value = slots[0].value;
+    fire(d.getElementById('order-time'), 'change');
+    d.getElementById('order-notes').value = 'Less ice po.';
+    fire(d.getElementById('order-notes'), 'input');
+    check('character counter updates', /12 \/ 200/.test(d.querySelector('[data-counter]').textContent),
+      d.querySelector('[data-counter]').textContent);
+
+    fire(form, 'submit');
+    await wait(1000);   /* covers the ~620ms pretend-send */
+
+    check('confirmation view shown', d.querySelector('[data-view="confirm"]').hidden === false);
+    check('cart view hidden', d.querySelector('[data-view="cart"]').hidden === true);
+    var code = d.querySelector('[data-confirm-code]').textContent;
+    check('order code well-formed', /^ALL-\d{8}-\d{3}$/.test(code), code);
+    check('name echoed', d.querySelector('[data-confirm-name]').textContent === 'Ivan Legaspi');
+    check('mobile reformatted', d.querySelector('[data-confirm-mobile]').textContent === '0917 123 4567',
+      d.querySelector('[data-confirm-mobile]').textContent);
+    check('total echoed', d.querySelector('[data-confirm-total]').textContent === '₱450',
+      d.querySelector('[data-confirm-total]').textContent);
+    check('notes echoed', /Less ice po\./.test(d.querySelector('[data-confirm-notes]').textContent));
+    check('cart cleared on confirmation', w.AllCafe.cart.isEmpty());
+    check('badge cleared', d.querySelector('[data-cart-count]').hidden === true);
+    check('snapshot persisted', !!w.AllCafe.store.get('allcafe.order', null));
+
+    /* ---------- confirmation survives a refresh ---------- */
+    group('confirmation survives a refresh');
+    w = await load('order.html'); d = w.document;
+    await wait(80);
+    check('still shows the confirmation', d.querySelector('[data-view="confirm"]').hidden === false);
+    check('same order code', d.querySelector('[data-confirm-code]').textContent === code,
+      d.querySelector('[data-confirm-code]').textContent);
+
+    group('adding again returns to the cart view');
+    w.AllCafe.cart.add('americano', 1);
+    await wait(80);
+    check('cart view returns', d.querySelector('[data-view="cart"]').hidden === false);
+    check('confirmation stepped aside', d.querySelector('[data-view="confirm"]').hidden === true);
+    w.AllCafe.cart.clear();
+    await wait(60);
+    check('clearing shows the confirmation again (snapshot still held)',
+      d.querySelector('[data-view="confirm"]').hidden === false);
+    w.AllCafe.store.remove('allcafe.order');
+
+    /* ---------- reservation ---------- */
+    group('reservation — validation and confirmation');
+    w = await load('reservation.html'); d = w.document;
+    await wait(80);
+    w.AllCafe.store.remove('allcafe.reservation');
+
+    var rform = d.querySelector('[data-reservation-form]');
+    check('policy strip shows today’s hours',
+      /Today: \d/.test(d.querySelector('[data-policy-hours]').textContent),
+      d.querySelector('[data-policy-hours]').textContent);
+    check('pending banner hidden with no booking',
+      d.querySelector('[data-pending-banner]').hidden === true);
+
+    fire(rform, 'submit');
+    await wait(80);
+    check('empty submit blocked', d.querySelector('[data-view="confirm"]').hidden === true);
+    check('party size flagged', d.querySelector('[data-field="party"]').classList.contains('is-invalid'));
+
+    d.getElementById('rsv-name').value = 'Ivan Legaspi'; fire(d.getElementById('rsv-name'), 'input');
+    d.getElementById('rsv-mobile').value = '+639171234567'; fire(d.getElementById('rsv-mobile'), 'input');
+    var rslots = d.getElementById('rsv-time').querySelectorAll('option[value]:not([value=""])');
+    check('seating slots generated', rslots.length > 0, rslots.length);
+    d.getElementById('rsv-time').value = rslots[0].value; fire(d.getElementById('rsv-time'), 'change');
+    d.getElementById('rsv-party').value = '9+'; fire(d.getElementById('rsv-party'), 'change');
+    check('9+ swaps the submit hint',
+      /ring you to arrange/.test(d.querySelector('[data-submit-hint]').textContent),
+      d.querySelector('[data-submit-hint]').textContent);
+    d.getElementById('rsv-party').value = '6'; fire(d.getElementById('rsv-party'), 'change');
+
+    fire(rform, 'submit');
+    await wait(1000);
+    check('reservation confirmed', d.querySelector('[data-view="confirm"]').hidden === false);
+    var rcode = d.querySelector('[data-confirm-code]').textContent;
+    check('reference well-formed', /^RSV-\d{4}$/.test(rcode), rcode);
+    check('party echoed', d.querySelector('[data-confirm-party]').textContent === '6 people',
+      d.querySelector('[data-confirm-party]').textContent);
+    check('booking stored', !!w.AllCafe.store.get('allcafe.reservation', null));
+
+    group('pending banner on return');
+    w = await load('reservation.html'); d = w.document;
+    await wait(80);
+    check('banner shown', d.querySelector('[data-pending-banner]').hidden === false);
+    check('banner quotes the code', d.querySelector('[data-pending-code]').textContent === rcode);
+    d.querySelector('[data-pending-view]').click();
+    await wait(60);
+    check('“View details” opens the confirmation', d.querySelector('[data-view="confirm"]').hidden === false);
+    d.querySelector('[data-new-booking]').click();
+    await wait(60);
+    check('“Book another” returns to the form', d.querySelector('[data-view="form"]').hidden === false);
+    d.querySelector('[data-pending-cancel]').click();
+    await wait(60);
+    check('cancel clears the booking', w.AllCafe.store.get('allcafe.reservation', null) === null);
+    check('banner hidden after cancel', d.querySelector('[data-pending-banner]').hidden === true);
+
+    /* ---------- chat ---------- */
+    group('chat widget');
+    w = await load('contact.html'); d = w.document;
+    await wait(80);
+    w.AllCafe.store.remove('allcafe.chat');
+    check('panel starts closed', d.querySelector('.chat-panel').hidden === true);
+    d.querySelector('[data-open-chat]').click();
+    await wait(80);
+    check('“Ask the mug” opens the panel', d.querySelector('.chat-panel').hidden === false);
+    check('fab reports expanded', d.querySelector('.chat-fab').getAttribute('aria-expanded') === 'true');
+    check('greeting posted', d.querySelectorAll('.chat-msg--bot').length === 1);
+    check('log is a live region', d.querySelector('.chat-log').getAttribute('aria-live') === 'polite');
+
+    d.querySelector('[data-intent="hours"]').click();
+    await wait(1200);
+    check('chip answered', d.querySelectorAll('.chat-msg--bot').length === 2,
+      d.querySelectorAll('.chat-msg--bot').length);
+    check('answer quotes real hours', /7:00 AM/.test(d.querySelector('.chat-log').textContent));
+
+    d.getElementById('chat-input').value = 'saan kayo banda?';
+    fire(d.querySelector('[data-chat-form]'), 'submit');
+    await wait(1200);
+    check('typed Taglish answered', /P\. Zamora/.test(d.querySelector('.chat-log').textContent));
+    var count = d.querySelectorAll('.chat-msg').length;
+
+    w = await load('menu.html'); d = w.document;
+    await wait(80);
+    d.querySelector('.chat-fab').click();
+    await wait(80);
+    check('transcript follows across pages', d.querySelectorAll('.chat-msg').length === count,
+      d.querySelectorAll('.chat-msg').length);
+
+    var esc = new w.KeyboardEvent('keydown', { key: 'Escape', bubbles: true });
+    d.querySelector('.chat-panel').dispatchEvent(esc);
+    await wait(60);
+    check('Escape closes the panel', d.querySelector('.chat-panel').hidden === true);
+    w.AllCafe.store.remove('allcafe.chat');
+    w.AllCafe.cart.clear();
+
+    /* ---------- 404 ---------- */
+    group('404');
+    w = await load('404.html'); d = w.document;
+    await wait(60);
+    check('shell present on 404', !!d.querySelector('.site-header') && !!d.querySelector('.site-footer'));
+    check('links home', !!d.querySelector('a[href="index.html"]'));
+
+  } catch (err) {
+    check('harness ran without throwing', false, err && err.message);
+  }
+
+  var s = document.getElementById('summary');
+  s.textContent = (fail === 0 ? '✅ ALL PASS — ' : '❌ FAILURES — ') + pass + ' passed, ' + fail + ' failed';
+  s.style.background = fail === 0 ? '#E6EDE2' : '#FBEAE9';
+  /* focusing inputs inside the frame scrolls this page — put it back */
+  frame.remove();
+  window.scrollTo(0, 0);
+}());
+</script>
+</body>
+</html>

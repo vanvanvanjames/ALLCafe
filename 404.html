@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — ALL Cafe</title>
+<meta name="description" content="That page isn't on the board. Head back to the ALL Cafe menu, reservations, or home page.">
+<meta name="theme-color" content="#1C3A5B">
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Karla:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div data-include="header"></div>
+<noscript>
+  <p class="noscript-note">
+    This prototype uses JavaScript for its navigation.
+    Pages: <a href="index.html">Home</a> · <a href="menu.html">Menu</a> ·
+    <a href="reservation.html">Reserve</a> · <a href="contact.html">Visit Us</a> ·
+    <a href="order.html">Your Order</a>
+  </p>
+</noscript>
+
+<main id="main">
+  <section class="section">
+    <div class="wrap">
+      <div class="empty-state tasa">
+        <img src="images/story/spilled-tasa.svg" alt="A tipped enamel mug with a spilled puddle of coffee" width="400" height="320">
+        <p class="eyebrow">Error 404</p>
+        <h1>Nasayang ang kape.</h1>
+        <p class="lede">
+          That page isn't on our board. It may have been renamed, or the link had a typo &mdash;
+          either way, a fresh cup is a click away.
+        </p>
+        <div class="confirm__actions">
+          <a class="btn btn--primary" href="index.html">Back to Home</a>
+          <a class="btn btn--outline" href="menu.html">See the Menu</a>
+          <a class="btn btn--outline" href="contact.html">Visit Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="js/include.js" defer></script>
+<script src="js/menu-data.js" defer></script>
+<script src="js/cart.js" defer></script>
+<script src="js/chat.js" defer></script>
+</body>
+</html>

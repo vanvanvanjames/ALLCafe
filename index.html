@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ALL Cafe — Kape para sa lahat. | Caloocan City</title>
+<meta name="description" content="A neighborhood kapihan in Caloocan City. Espresso, merienda and a table with your name on it. Browse the menu, order ahead for pickup, or reserve a table.">
+<meta name="theme-color" content="#1C3A5B">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ALL Cafe — Kape para sa lahat.">
+<meta property="og:description" content="A neighborhood kapihan in Caloocan City. Espresso, merienda and a table with your name on it.">
+<meta property="og:image" content="images/hero/kapihan-counter.svg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Karla:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div data-include="header"></div>
+<noscript>
+  <p class="noscript-note">
+    This prototype uses JavaScript for its navigation, cart and chat.
+    Pages: <a href="index.html">Home</a> · <a href="menu.html">Menu</a> ·
+    <a href="reservation.html">Reserve</a> · <a href="contact.html">Visit Us</a> ·
+    <a href="order.html">Your Order</a>
+  </p>
+</noscript>
+
+<main id="main">
+
+  <!-- ============================ Hero ============================ -->
+  <section class="hero">
+    <div class="hero__media">
+      <img src="images/hero/kapihan-counter.svg" alt="The ALL Cafe counter at opening time, with enamel mugs steaming under warm pendant lights" width="1200" height="800">
+    </div>
+    <div class="wrap hero__inner">
+      <p class="pill" data-open-status></p>
+      <h1 class="hero__title">Kape para sa lahat.</h1>
+      <p class="hero__sub">
+        Espresso, merienda, and a table with your name on it &mdash;
+        your neighborhood coffee stop in Caloocan.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--enamel" href="menu.html">Browse the Menu</a>
+        <a class="btn btn--ghost-light" href="reservation.html">Reserve a Table</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= Why ALL (story) ====================== -->
+  <section class="section" aria-labelledby="why-heading">
+    <div class="wrap story">
+      <div class="story__copy stack">
+        <p class="eyebrow">Why ALL</p>
+        <h2 id="why-heading">A small kapihan where everyone gets a seat.</h2>
+        <p>
+          We started with four tables, one secondhand espresso machine, and a rule we still keep:
+          nobody gets turned away for ordering the cheapest thing on the board. Students with one
+          americano and five hours of homework, tricycle drivers on a ten-minute break, titas
+          settling in for the long chika &mdash; same welcome, same mugs.
+        </p>
+        <p>
+          <strong>ALL</strong> means <em>lahat</em>. It is also what is painted across the enamel
+          tasa we serve everything in &mdash; the same speckled tin mug that is already sitting in
+          your lola's kitchen.
+        </p>
+        <ul class="chip-row">
+          <li class="chip"><img src="assets/icons/bean.svg" alt="" width="24" height="24">Barako-forward blends</li>
+          <li class="chip"><img src="assets/icons/bread.svg" alt="" width="24" height="24">Merienda all day</li>
+          <li class="chip"><img src="assets/icons/peso.svg" alt="" width="24" height="24">Suki-friendly prices</li>
+        </ul>
+      </div>
+      <div class="story__art">
+        <img class="tasa" src="images/story/roasted-beans.svg" alt="A scoop of freshly roasted barako beans" width="600" height="450" loading="lazy">
+        <img class="tasa" src="images/story/pandesal-basket.svg" alt="A basket of warm pandesal on the counter" width="600" height="450" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== Featured menu ======================= -->
+  <section class="section section--tint" aria-labelledby="featured-heading">
+    <div class="wrap">
+      <div class="section__head">
+        <div>
+          <p class="eyebrow">Suki favourites</p>
+          <h2 id="featured-heading">Drinks &amp; bites people come back for</h2>
+        </div>
+        <a class="link-arrow" href="menu.html">See the full menu</a>
+      </div>
+      <div class="card-grid" data-featured-grid>
+        <!-- rendered from menu-data.js by home.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== How ordering ahead works ================= -->
+  <section class="section section--dark" aria-labelledby="how-heading">
+    <div class="wrap">
+      <p class="eyebrow">Advance orders</p>
+      <h2 id="how-heading">Skip the queue in three steps</h2>
+      <ol class="steps">
+        <li class="step">
+          <span class="step__num">1</span>
+          <h3>Pick your order</h3>
+          <p>Add drinks and pastries to your cart from the menu. Your order follows you around the site.</p>
+        </li>
+        <li class="step">
+          <span class="step__num">2</span>
+          <h3>Choose a pickup time</h3>
+          <p>Any slot within opening hours, at least 30 minutes out, so the bar has time to prep.</p>
+        </li>
+        <li class="step">
+          <span class="step__num">3</span>
+          <h3>Pay at the counter</h3>
+          <p>Cash or GCash when you arrive. Say your order code and we hand it over.</p>
+        </li>
+      </ol>
+      <p class="how__note">Demo site: no real payment is processed and no order reaches a real kitchen.</p>
+      <a class="btn btn--enamel" href="menu.html">Start an order</a>
+    </div>
+  </section>
+
+  <!-- ===================== Reservation teaser ===================== -->
+  <section class="section" aria-labelledby="reserve-heading">
+    <div class="wrap teaser tasa">
+      <div class="teaser__art">
+        <img src="images/story/table-for-two.svg" alt="A table set for two with mugs, pandesal and a notebook, seen from above" width="600" height="450" loading="lazy">
+      </div>
+      <div class="teaser__copy stack">
+        <p class="eyebrow">Reservations</p>
+        <h2 id="reserve-heading">May okasyon? We'll set the table.</h2>
+        <p>
+          Book ahead for birthdays, study groups, or a barkada catch-up that will definitely run long.
+          Parties of up to eight, held for 15 minutes past your slot &mdash; and walk-ins are always welcome.
+        </p>
+        <a class="btn btn--primary" href="reservation.html">Reserve a Table</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= Visit strip ======================== -->
+  <section class="section section--tint" aria-labelledby="visit-heading">
+    <div class="wrap">
+      <h2 id="visit-heading" class="visually-hidden">Visit us</h2>
+      <div class="visit-strip">
+        <div class="visit-strip__col">
+          <img src="assets/icons/clock.svg" alt="" width="24" height="24">
+          <h3>Hours</h3>
+          <ul class="plain-list" data-hours-list></ul>
+        </div>
+        <div class="visit-strip__col">
+          <img src="assets/icons/pin.svg" alt="" width="24" height="24">
+          <h3>Where</h3>
+          <p data-address></p>
+        </div>
+        <div class="visit-strip__col">
+          <img src="assets/icons/route.svg" alt="" width="24" height="24">
+          <h3>Getting here</h3>
+          <p>Two tricycle minutes from LRT-1 Monumento. Any Rizal Ave jeep passes us.</p>
+          <a class="link-arrow" href="contact.html">Directions</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div data-include="footer"></div>
+
+<script src="js/include.js" defer></script>
+<script src="js/menu-data.js" defer></script>
+<script src="js/cart.js" defer></script>
+<script src="js/cards.js" defer></script>
+<script src="js/chat.js" defer></script>
+<script src="js/home.js" defer></script>
+</body>
+</html>
