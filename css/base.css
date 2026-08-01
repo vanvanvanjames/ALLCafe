@@ -6,8 +6,8 @@
 
 :root {
   /* ---- colour ---- */
-  --asul: #1C3A5B;          /* enamel-rim navy: header, footer, rims, display type */
-  --asul-deep: #16304B;     /* pressed / footer base */
+  --asul: #1F4A3C;          /* enamel-rim navy: header, footer, rims, display type */
+  --asul-deep: #1F4A3C;     /* pressed / footer base */
   --asul-soft: rgba(28, 58, 91, .14);
   --enamel: #F5F4EE;        /* speckled enamel white: page background */
   --enamel-2: #EBE7DD;      /* alternating band */
@@ -54,7 +54,7 @@
 
   /* The enamelware speckle, inlined so it costs no request.
      Source file: assets/speckle.svg — keep the two in step if you edit it. */
-  --speckle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%231C3A5B' opacity='.09'%3E%3Ccircle cx='9' cy='14' r='1.5'/%3E%3Ccircle cx='31' cy='6' r='1'/%3E%3Ccircle cx='52' cy='18' r='1.7'/%3E%3Ccircle cx='70' cy='9' r='1.1'/%3E%3Ccircle cx='19' cy='33' r='1.2'/%3E%3Ccircle cx='44' cy='39' r='1.6'/%3E%3Ccircle cx='63' cy='45' r='1'/%3E%3Ccircle cx='6' cy='52' r='1.4'/%3E%3Ccircle cx='27' cy='59' r='1'/%3E%3Ccircle cx='49' cy='68' r='1.3'/%3E%3Ccircle cx='73' cy='62' r='1.6'/%3E%3Ccircle cx='36' cy='76' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
+  --speckle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%231F4A3C' opacity='.09'%3E%3Ccircle cx='9' cy='14' r='1.5'/%3E%3Ccircle cx='31' cy='6' r='1'/%3E%3Ccircle cx='52' cy='18' r='1.7'/%3E%3Ccircle cx='70' cy='9' r='1.1'/%3E%3Ccircle cx='19' cy='33' r='1.2'/%3E%3Ccircle cx='44' cy='39' r='1.6'/%3E%3Ccircle cx='63' cy='45' r='1'/%3E%3Ccircle cx='6' cy='52' r='1.4'/%3E%3Ccircle cx='27' cy='59' r='1'/%3E%3Ccircle cx='49' cy='68' r='1.3'/%3E%3Ccircle cx='73' cy='62' r='1.6'/%3E%3Ccircle cx='36' cy='76' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
   --speckle-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23F5F4EE' opacity='.10'%3E%3Ccircle cx='9' cy='14' r='1.5'/%3E%3Ccircle cx='31' cy='6' r='1'/%3E%3Ccircle cx='52' cy='18' r='1.7'/%3E%3Ccircle cx='70' cy='9' r='1.1'/%3E%3Ccircle cx='19' cy='33' r='1.2'/%3E%3Ccircle cx='44' cy='39' r='1.6'/%3E%3Ccircle cx='63' cy='45' r='1'/%3E%3Ccircle cx='6' cy='52' r='1.4'/%3E%3Ccircle cx='27' cy='59' r='1'/%3E%3Ccircle cx='49' cy='68' r='1.3'/%3E%3Ccircle cx='73' cy='62' r='1.6'/%3E%3Ccircle cx='36' cy='76' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
 }
 
